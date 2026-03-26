@@ -4,8 +4,9 @@ runtime: python3
 build:
   commands:
     build:
-      - pip install --upgrade pip
-      - pip install -r requirements.txt
+      - python -m ensurepip --upgrade      # ensure pip exists
+      - python -m pip install --upgrade pip
+      - python -m pip install -r requirements.txt
 
 run:
   runtime-version: 3.11
