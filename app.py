@@ -10,17 +10,25 @@ def root():
     return {"message": "API is running"}
 
 @app.get("/fetch_data")
-def fetch_data(year: int = None, country: str = None, market: str = None):
+def fetch_data(
+    year: int = Query(None),
+    country: str = Query(None),
+    market: str = Query(None)
+):
     try:
         df = pd.read_csv(DATA_URL)
 
-        if year:
+        # Apply filters safely
+        if year is not None:
             df = df[df['year'] == year]
-        if country:
+
+        if country is not None:
             df = df[df['country'] == country]
-        if market:
+
+        if market is not None:
             df = df[df['mkt_name'] == market]
 
+        # Handle empty results
         if df.empty:
             raise HTTPException(status_code=404, detail="No data found")
 
